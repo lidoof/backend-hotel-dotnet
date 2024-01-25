@@ -44,11 +44,11 @@ Voici les étapes pour lancer votre projet en utilisant Markdown pour une mise e
    dotnet run
    ```
 
-   Cette commande compile et lance votre application. Les logs dans le terminal vous indiqueront sur quel port votre application écoute (par défaut, cela sera généralement `http://localhost:5000` et `https://localhost:5001`).
+   Cette commande compile et lance l'application. Les logs dans le terminal vous indiqueront sur quel port  l'application écoute (par défaut, cela sera généralement `http://localhost:5000` et `https://localhost:5001`).
 
-5. **Accéder à Swagger (si disponible)**
+5. **Accéder à Swagger **
 
-   Si votre application utilise Swagger pour la documentation de l'API, vous pouvez accéder à l'interface utilisateur de Swagger en ajoutant `/swagger` à l'URL de votre application dans un navigateur web. Par exemple :
+   L'application utilise Swagger pour la documentation de l'API, vous pouvez accéder à l'interface utilisateur de Swagger en ajoutant `/swagger` à l'URL de votre application dans un navigateur web. Par exemple :
 
    ```
    https://localhost:5001/swagger
@@ -70,7 +70,7 @@ Voici comment vous pouvez ajouter une section pour lancer les tests unitaires de
 
 ## Exécution des Tests Unitaires
 
-Une fois que vous avez lancé votre application et que tout fonctionne correctement, vous pouvez également vouloir exécuter les tests unitaires pour vous assurer que toutes les parties de votre application fonctionnent comme prévu.
+Une fois que vous avez lancé l'application et que tout fonctionne correctement, vous pouvez également vouloir exécuter les tests unitaires pour vous assurer que toutes les parties de votre application fonctionnent comme prévu.
 
 1. **Accéder au dossier des Tests**
 
