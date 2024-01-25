@@ -12,18 +12,6 @@ services:
       - app-network
     volumes:
       - db-data:/var/opt/mssql
-
-  app:
-    build:
-      context: .
-      dockerfile: HotelDDD/Dockerfile # Assurez-vous que le chemin est correct
-    ports:
-      - "7176:80"
-    depends_on:
-      - db
-    networks:
-      - app-network
-
 networks:
   app-network:
     driver: bridge

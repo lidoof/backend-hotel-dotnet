@@ -14,27 +14,18 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-// Add services to the container.
+// Ajout des contrôleurs et configuration des options JSON
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    // Configure JsonSerializerOptions here
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     options.JsonSerializerOptions.WriteIndented = true;
 });
 
-// Configuration des services
+// Configuration des services pour Entity Framework et les repositories
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Ajouter le service CustomerService et son interface ICustomerRepository
-builder.Services.AddScoped<ICustomerRepository, DatabaseCustomerRepository>(); 
+
+builder.Services.AddScoped<ICustomerRepository, DatabaseCustomerRepository>();
 builder.Services.AddScoped<CustomerService>();
 
 builder.Services.AddScoped<IRoomRepository, DatabaseRoomRepository>();
@@ -43,19 +34,23 @@ builder.Services.AddScoped<RoomService>();
 builder.Services.AddScoped<IWalletRepository, DatabaseWalletRepository>();
 builder.Services.AddScoped<WalletService>();
 
-
-builder.Services.AddScoped<IReservationRepository, DatabaseReservationRepository>(); // Assurez-vous d'avoir une implémentation DatabaseReservationRepository
+builder.Services.AddScoped<IReservationRepository, DatabaseReservationRepository>();
 builder.Services.AddScoped<ReservationService>();
+
+// Swagger pour la documentation API
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuration de l'application pour l'utilisation de Swagger et Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Création de la base de données si elle n'existe pas (à utiliser avec prudence en production)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -63,10 +58,9 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.EnsureCreated(); // Crée la base de données si elle n'existe pas
 }
 
-app.UseHttpsRedirection();
-
+// Middleware pour le routage des requêtes
 app.UseAuthorization();
-
 app.MapControllers();
 
+// Lancement de l'application
 app.Run();
