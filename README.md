@@ -1,4 +1,4 @@
-Voici les étapes pour lancer votre projet en utilisant Markdown pour une mise en forme claire et structurée :
+Voici les étapes pour lancer le projet :
 
 ---
 
