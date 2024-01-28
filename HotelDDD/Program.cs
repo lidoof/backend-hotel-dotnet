@@ -11,13 +11,12 @@ using HotelDDD.Domain.Wallet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Ajout des contrôleurs et configuration des options JSON
+// Ajout des contrÃ´leurs et configuration des options JSON
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
     options.JsonSerializerOptions.WriteIndented = true;
 });
 
@@ -37,6 +36,17 @@ builder.Services.AddScoped<WalletService>();
 builder.Services.AddScoped<IReservationRepository, DatabaseReservationRepository>();
 builder.Services.AddScoped<ReservationService>();
 
+// Ajout du service CORS pour autoriser toutes les origines, mÃ©thodes et en-tÃªtes (pour le dÃ©veloppement)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 // Swagger pour la documentation API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -50,17 +60,25 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Création de la base de données si elle n'existe pas (à utiliser avec prudence en production)
+// Middleware pour le routage des requÃªtes
+app.UseRouting();
+
+// Utilisation du service CORS avec la politique "AllowAll"
+app.UseCors("AllowAll");
+
+// Middleware pour l'autorisation
+app.UseAuthorization();
+
+// Configuration de l'application pour l'utilisation des Controllers
+app.MapControllers();
+
+// CrÃ©ation de la base de donnÃ©es si elle n'existe pas (Ã  utiliser avec prudence en production)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<AppDbContext>();
-    dbContext.Database.EnsureCreated(); // Crée la base de données si elle n'existe pas
+    dbContext.Database.EnsureCreated(); // CrÃ©e la base de donnÃ©es si elle n'existe pas
 }
-
-// Middleware pour le routage des requêtes
-app.UseAuthorization();
-app.MapControllers();
 
 // Lancement de l'application
 app.Run();

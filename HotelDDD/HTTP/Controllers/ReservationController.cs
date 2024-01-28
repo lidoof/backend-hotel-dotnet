@@ -54,7 +54,7 @@ namespace HotelDDD.HTTP.Controllers
             try
             {
                 await _reservationService.ConfirmReservationAsync(reservationId);
-                return Ok($"La réservation {reservationId} a été confirmée.");
+                return Ok(new {message= "La réservation  a été confirmée."});
             }
             catch (Exception ex)
             {

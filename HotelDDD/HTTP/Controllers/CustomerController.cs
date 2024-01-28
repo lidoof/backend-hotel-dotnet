@@ -123,10 +123,10 @@ namespace HotelDDD.HTTP.Controllers
 
                 if (result)
                 {
-                    return Ok("Authentication successful");
+                    return Ok(new {message= "authentification succesfful"});
                 }
 
-                return Unauthorized("Authentication failed");
+                return Unauthorized(new {error = "identifiant incorrect"});
             }
             catch (Exception ex)
             {

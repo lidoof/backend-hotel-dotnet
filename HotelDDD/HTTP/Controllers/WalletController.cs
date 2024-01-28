@@ -55,7 +55,7 @@ namespace HotelDDD.HTTP.Controllers
                 // Mettez à jour le portefeuille dans la base de données
                 await _walletService.UpdateWalletAsync(wallet);
 
-                return Ok();
+                return Ok(new  { Balance = wallet.Balance} );
             }
             catch (Exception ex)
             {
